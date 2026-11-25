@@ -143,5 +143,10 @@ FnosMount/
 ├── run.bat / build.bat        # 启动与打包
 ├── requirements.txt           # 仅打包用开发依赖（运行时零依赖）
 ├── CHANGELOG.md               # 更新记录
+├── LICENSE                    # MIT 许可证
 └── .gitignore / .gitattributes
 ```
+
+## 许可证
+
+本项目基于 [MIT License](LICENSE) 开源，Copyright (c) 2026 liangpangzhi。可自由使用、修改、分发，包括商业用途，保留版权与许可声明即可。
