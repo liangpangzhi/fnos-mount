@@ -1,0 +1,10 @@
+# 统一换行符，避免 Windows 批处理在别的平台被改写
+* text=auto
+*.py   text eol=lf
+*.md   text eol=lf
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
+*.ico  binary
+*.png  binary
+*.exe  binary
+*.zip  binary

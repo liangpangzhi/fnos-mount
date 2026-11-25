@@ -1,0 +1,5 @@
+# 运行本程序不需要任何第三方依赖（仅 Python 3.9+ 标准库 + ctypes 调 Windows API）
+# 下面仅列出“打包 exe”和“跑测试”时用的开发依赖。
+
+# 打包成单文件 exe
+pyinstaller>=6.0

@@ -1,0 +1,39 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- PyInstaller ----
+build/
+dist/
+*.manifest
+# 打包产物统一放在 release/ 下（不进版本库，作为 GitHub Release 附件上传）
+release/
+
+# ---- 运行期数据（凭据不落盘，配置在 %APPDATA%）----
+*.log
+run.log
+error.log
+config.json
+
+# ---- 编辑器 / 系统 ----
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# ---- 临时文件 ----
+_shot*.py
+_*.bmp
+_*.png
+test_*.bmp
