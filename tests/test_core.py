@@ -34,11 +34,11 @@ class TestDiscoveryParsing(unittest.TestCase):
         answer_name = b"\xc0\x0c"  # 压缩指针指向偏移量 12 的问题名
         packet = struct.pack("!HHHHHH", 0, 0x8180, 1, 1, 0, 0)
         packet += question + struct.pack("!HH", 1, 1)
-        packet += answer_name + struct.pack("!HHIH", 1, 1, 120, 4) + socket.inet_aton("192.168.5.11")
+        packet += answer_name + struct.pack("!HHIH", 1, 1, 120, 4) + socket.inet_aton("192.168.1.10")
         questions, answers = parse_dns_message(packet)
         self.assertEqual(questions, [("fnn.test", 1)])
         self.assertEqual(answers[0][1], 1)
-        self.assertEqual(answers[0][4], "192.168.5.11")
+        self.assertEqual(answers[0][4], "192.168.1.10")
 
     def test_merge_deduplicates_and_scores(self) -> None:
         devices = _merge(
@@ -78,7 +78,7 @@ class TestShareParsing(unittest.TestCase):
 
 class TestPaths(unittest.TestCase):
     def test_smb_path(self) -> None:
-        self.assertEqual(mount.smb_path("192.168.5.11", "/photo/2024"), "\\\\192.168.5.11\\photo\\2024")
+        self.assertEqual(mount.smb_path("192.168.1.10", "/photo/2024"), "\\\\192.168.1.10\\photo\\2024")
 
     def test_normalise_drive(self) -> None:
         self.assertEqual(mount.normalise_drive(" z "), "Z:")

@@ -1223,7 +1223,7 @@ class NativeUI:
         hints = {
             "SMB": "点击“读取共享目录”列出飞牛/群晖/威联通的共享文件夹，也可手动填写。",
             "NFS": "填写 NFS 导出路径，例如 /volume1/data；需先启用 Windows NFS 客户端。",
-            "WebDAV": "填写完整 WebDAV 地址，例如 http://192.168.5.11:5005/dav。",
+            "WebDAV": "填写完整 WebDAV 地址，例如 http://192.168.1.10:5005/dav。",
         }
         self.set_text(ID_HINT, hints.get(protocol, ""))
         host = self.text(ID_HOST)
