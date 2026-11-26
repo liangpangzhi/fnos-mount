@@ -9,3 +9,4 @@ LICENSE text eol=lf
 *.png  binary
 *.exe  binary
 *.zip  binary
+*.sha256 text eol=lf
