@@ -23,7 +23,9 @@
 
 ### 方式一：直接运行 exe（推荐）
 
-双击 `dist\FnosMount.exe`，打开原生窗口；关闭按钮只是隐藏到托盘，右键托盘图标选择“退出程序”才真正退出。
+下载 [`download/FnosMount-1.0.1-win64.zip`](download/FnosMount-1.0.1-win64.zip) 解压（含 exe、使用说明、自启脚本），双击 `FnosMount.exe` 即可，无需 Python。校验值见同目录 `.sha256` 文件；发布页：[Releases](https://github.com/liangpangzhi/fnos-mount/releases)。
+
+自己打包出来的成品在 `dist\FnosMount.exe`，打开原生窗口；关闭按钮只是隐藏到托盘，右键托盘图标选择“退出程序”才真正退出。
 
 ```bat
 dist\FnosMount.exe --tray           :: 启动后直接驻留托盘，不显示窗口
@@ -139,7 +141,8 @@ FnosMount/
 │   └── assets/                # 图标
 ├── tests/test_core.py         # 单元测试（unittest，14 项）
 ├── docs/preview.png           # 界面截图
-├── dist/FnosMount.exe         # 打包成品（不入库，用 Release 附件分发）
+├── download/                  # 发布用压缩包（随仓库分发，免安装下载）
+├── dist/FnosMount.exe         # 本地打包成品（不入库）
 ├── run.bat / build.bat        # 启动与打包
 ├── requirements.txt           # 仅打包用开发依赖（运行时零依赖）
 ├── CHANGELOG.md               # 更新记录

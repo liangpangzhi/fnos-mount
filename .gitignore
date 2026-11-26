@@ -17,6 +17,7 @@ dist/
 *.manifest
 # 打包产物统一放在 release/ 下（不进版本库，作为 GitHub Release 附件上传）
 release/
+# download/ 例外：这里放的是要随仓库直接分发的发布压缩包（有意入库）
 
 # ---- 运行期数据（凭据不落盘，配置在 %APPDATA%）----
 *.log
