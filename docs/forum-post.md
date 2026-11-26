@@ -77,7 +77,7 @@ PyInstaller 打包的单文件 exe 比较容易被启发式误报，源码和打
 ### 下载
 
 - 发布页（含校验值）：https://github.com/liangpangzhi/fnos-mount/releases/tag/v1.0.1
-- 直接下载（约 8.2 MB）：https://github.com/liangpangzhi/fnos-mount/raw/main/download/FnosMount-1.0.1-win64.zip
+- 直接下载（约 8.2 MB）：https://github.com/liangpangzhi/fnos-mount/releases/download/v1.0.1/FnosMount-1.0.1-win64.zip
 - 源码 / 反馈：https://github.com/liangpangzhi/fnos-mount
 
 版本 v1.0.1 · 2026-11-26 · 8.4 MB · MIT 许可证

@@ -23,7 +23,7 @@
 
 ### 方式一：直接运行 exe（推荐）
 
-下载 [`download/FnosMount-1.0.1-win64.zip`](download/FnosMount-1.0.1-win64.zip) 解压（含 exe、使用说明、自启脚本），双击 `FnosMount.exe` 即可，无需 Python。校验值见同目录 `.sha256` 文件；发布页：[Releases](https://github.com/liangpangzhi/fnos-mount/releases)。
+下载 [FnosMount-1.0.1-win64.zip](https://github.com/liangpangzhi/fnos-mount/releases/download/v1.0.1/FnosMount-1.0.1-win64.zip) 解压（含 exe、使用说明、自启脚本），双击 `FnosMount.exe` 即可，无需 Python。校验值见 [发布页](https://github.com/liangpangzhi/fnos-mount/releases/tag/v1.0.1) 的 `.sha256` 附件。
 
 自己打包出来的成品在 `dist\FnosMount.exe`，打开原生窗口；关闭按钮只是隐藏到托盘，右键托盘图标选择“退出程序”才真正退出。
 
