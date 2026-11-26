@@ -122,6 +122,14 @@ class TestConfig(unittest.TestCase):
         self.assertIn("--tray", command)
         self.assertIn("--reconnect", command)
 
+    def test_autostart_args_keep_gui(self) -> None:
+        """开机自启是 --tray --reconnect，必须进 GUI 常驻，不能走静默退出分支。"""
+        import main as entry
+
+        self.assertFalse(entry.should_run_silent_reconnect(tray=True, reconnect=True))
+        self.assertTrue(entry.should_run_silent_reconnect(tray=False, reconnect=True))
+        self.assertFalse(entry.should_run_silent_reconnect(tray=False, reconnect=False))
+
 
 @unittest.skipUnless(IS_WINDOWS, "凭据管理器仅支持 Windows")
 class TestCredentials(unittest.TestCase):

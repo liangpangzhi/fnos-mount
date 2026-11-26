@@ -47,6 +47,15 @@ def run_reconnect() -> int:
     return 0 if all(ok for _, ok, _ in results) else 1
 
 
+def should_run_silent_reconnect(tray: bool, reconnect: bool) -> bool:
+    """只有「单独 --reconnect」（计划任务/命令行）才恢复映射后退出。
+
+    开机自启命令是 `--tray --reconnect`，这种组合必须进 GUI 常驻托盘，
+    否则用户登录后完全看不到程序（历史 bug）。
+    """
+    return bool(reconnect and not tray)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="飞牛 NAS 磁盘映射器")
     parser.add_argument("--selftest", action="store_true", help="命令行自检并扫描局域网")
@@ -57,7 +66,9 @@ def main() -> int:
 
     if args.selftest:
         return run_selftest()
-    if args.reconnect:
+    # 单独 --reconnect（计划任务/命令行）才走“恢复后退出”的静默路径；
+    # --tray --reconnect（开机自启）必须进 GUI，否则用户登录后什么都看不到
+    if should_run_silent_reconnect(args.tray, args.reconnect):
         return run_reconnect()
 
     try:
@@ -65,7 +76,7 @@ def main() -> int:
     except ImportError as exc:
         print(f"图形界面启动失败: {exc}", file=sys.stderr)
         return 1
-    launch(open_browser=not args.tray, tray_only=args.tray)
+    launch(open_browser=not args.tray, tray_only=args.tray, reconnect=args.reconnect)
     return 0
 
 

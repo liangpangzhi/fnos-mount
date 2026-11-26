@@ -824,6 +824,10 @@ class NativeUI:
         self.set_checked(ID_REMEMBER, True)
         self.set_checked(ID_PERSIST, True)
         self.set_checked(ID_AUTOSTART, bool(autostart.is_enabled()))
+        if self.checked(ID_AUTOSTART):
+            self.log(f"开机自启已登记：{autostart.startup_value()}")
+            if autostart.is_blocked_by_system():
+                self.log("注意：该系统启动项在「任务管理器 → 启动」里被禁用，需在那里启用后才会随登录启动")
         self.set_checked(ID_START_MIN, bool(self.settings["settings"].get("start_minimized")))
         self.set_checked(ID_KEEP, bool(self.settings["settings"].get("keep_mounted", True)))
         self.set_checked(ID_TUNE, bool(self.settings["settings"].get("large_file_tuning")))
@@ -884,7 +888,7 @@ class NativeUI:
         if self.hwnd:
             self.u.PostMessageW(self.hwnd, WM_CLOSE, 0, 0)
 
-    def run(self, enable_tray: bool = True, start_hidden: bool = False) -> None:
+    def run(self, enable_tray: bool = True, start_hidden: bool = False, reconnect: bool = False) -> None:
         self.create_window()
         self.u.SetTimer(self.hwnd, TIMER_HOVER, 40, None)
         if enable_tray:
@@ -894,12 +898,20 @@ class NativeUI:
             )
             if self.tray.start():
                 self.log("系统托盘已就绪")
+                if start_hidden:
+                    # 开机自启是静默的，给个气泡提示，让用户知道程序确实起来了
+                    self.tray.notify("已在托盘运行，正在恢复磁盘映射")
         if start_hidden:
-            self.hide()
-        else:
+            if not (self.tray and self.tray.available):
+                # 托盘没建起来还隐藏窗口，用户就彻底看不到程序了，改为直接显示
+                start_hidden = False
+                self.log("托盘不可用，已改为直接显示主窗口")
+            else:
+                self.hide()
+        if not start_hidden:
             self.show()
         self.refresh_mappings()
-        if self.settings["settings"].get("auto_reconnect"):
+        if reconnect or self.settings["settings"].get("auto_reconnect"):
             self.auto_reconnect()
         else:
             self.start_scan(False)
@@ -1355,8 +1367,13 @@ class NativeUI:
 
     def on_setting_changed(self, control: int) -> None:
         if control == ID_AUTOSTART:
-            ok, message = autostart.set_enabled(self.checked(ID_AUTOSTART))
-            self.settings = config.update_settings(autostart=ok and self.checked(ID_AUTOSTART))
+            want = self.checked(ID_AUTOSTART)
+            ok, message = autostart.set_enabled(want)
+            self.settings = config.update_settings(autostart=ok and want)
+            if ok and want:
+                self.log(f"开机自启命令：{autostart.startup_command()}")
+                if autostart.is_blocked_by_system():
+                    message += "；但系统启动项仍被禁用，请在任务管理器-启动中启用"
         elif control == ID_START_MIN:
             self.settings = config.update_settings(start_minimized=self.checked(ID_START_MIN))
             message = "启动方式已更新"
@@ -1436,13 +1453,21 @@ def _activate_existing_window() -> bool:
     return True
 
 
-def launch(open_browser: bool = True, tray_only: bool = False) -> None:
+def launch(open_browser: bool = True, tray_only: bool = False, reconnect: bool = False) -> None:
     """启动原生 GUI。参数保留兼容旧命令行。"""
     if not _acquire_single_instance():
         # 已有实例在运行：激活它的主页窗口后直接退出，不再启动第二个
         _activate_existing_window()
         return
     ui = NativeUI()
+    # 开机自启项可能指向旧位置的 exe（用户移动过程序）：启动时自动纠正
+    try:
+        if autostart.is_enabled() and autostart.startup_value() != autostart.startup_command():
+            ok, _msg = autostart.set_enabled(True)
+            if ok:
+                ui.log("已把开机自启项更新为当前程序路径")
+    except Exception as exc:  # noqa: BLE001
+        ui.log(f"检查开机自启项失败: {exc}")
     # 手动双击启动：始终直接展示主页；开机自启（--tray）时按设置静默进托盘
     hidden = bool(tray_only and ui.settings["settings"].get("start_minimized", True))
-    ui.run(enable_tray=True, start_hidden=hidden)
+    ui.run(enable_tray=True, start_hidden=hidden, reconnect=reconnect)
